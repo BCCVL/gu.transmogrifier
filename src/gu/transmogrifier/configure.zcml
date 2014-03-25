@@ -1,0 +1,25 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    >
+
+    <utility
+       component=".jsonsource.JSONSource"
+       name="gu.transmogrifier.jsonsource"
+       />
+
+    <utility
+       component=".attributefromfile.AttributeFromFile"
+       name="gu.transmogrifier.attributefromfile"
+       />
+
+    <utility
+       component=".selectableconstraintypes.SelectableConstrainTypes"
+       name="gu.transmogrifier.selectableconstraintypes"
+       />
+
+    <utility
+        component=".namechoosingconstructor.NameChoosingConstructor"
+        name="gu.transmogrifier.namechoosingconstructor"
+    />
+
+</configure>
