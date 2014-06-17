@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.4.2-dev'
+version = '0.4.2'
 
 setup(
     name='gu.transmogrifier',
