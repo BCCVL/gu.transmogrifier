@@ -36,6 +36,7 @@ class JSONSource(object):
             raise Exception('Path ({}) does not exists.'.format(str(self.path)))
         self.path = self.path.rstrip(os.sep)
 
+        self.enabled = options.get('enabled', "True").lower() in ("true", "1", "on", "yes")
         # add path prefix to imported content
         self.prefix = options.get('prefix', '').strip().strip(os.sep)
         # keys for sections further down the chain
@@ -46,6 +47,9 @@ class JSONSource(object):
         # exhaust previous iterator
         for item in self.previous:
             yield item
+
+        if not self.enabled:
+            return
 
         # start our own source
         # 1. iterate through dir files first
@@ -90,6 +94,7 @@ class JSONSource(object):
                         if os.path.isdir(_absfilename):
                             # ignore dirs, in case we generated a folder
                             continue
+                        # FIXME: if possible don't load file into ram
                         _files[_filename] = {
                             'name': _filename,
                             'data': open(_absfilename).read()
