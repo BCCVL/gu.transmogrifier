@@ -22,4 +22,9 @@
         name="gu.transmogrifier.namechoosingconstructor"
     />
 
+    <utility
+        component=".commit.Commit"
+        name="gu.transmogrifier.commit"
+    />
+
 </configure>
