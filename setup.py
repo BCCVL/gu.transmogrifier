@@ -1,11 +1,9 @@
 from setuptools import setup, find_packages
-import os
-
-version = '0.5.1-dev'
 
 setup(
     name='gu.transmogrifier',
-    version=version,
+    setup_requires=["guscmversion"],
+    guscmversion=True,
     description="Transmogrifier blueprints for Plone",
     # long_description=open("README.txt").read() + "\n" +
     #                  open(os.path.join("docs", "HISTORY.txt")).read(),
@@ -18,7 +16,7 @@ setup(
     keywords='',
     author='Gerhard Weis',
     author_email='g.weis@griffith.edu.au',
-    #url='http://svn.plone.org/svn/collective/',
+    # url='http://svn.plone.org/svn/collective/',
     license='GPL',
     packages=find_packages('src'),
     package_dir={'': 'src'},
@@ -43,4 +41,4 @@ setup(
     [z3c.autoinclude.plugin]
     target = plone
     """,
-    )
+)
