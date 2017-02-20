@@ -10,11 +10,13 @@ pipeline {
 
         stage('Build') {
 
+            // environment {} is executed in node context, and there is no WORKSPACE defined
+
             steps {
-                // environment {} is executed in node context, and there is no WORKSPACE defined
+                // clean up workenv but keep cached eggs
+                sh 'git clean -x -d -f -e "eggs"'
+
                 withPyPi() {
-                    // clean up workenv but keep cached eggs
-                    sh 'git clean -x -d -f -e "eggs"'
                     // get pip
                     sh 'easy_install pip'
                     // install build env
