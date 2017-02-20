@@ -32,3 +32,6 @@ var/
 
 # OSX
 .DS_Store
+.cache
+eggs
+.eggs
