@@ -58,10 +58,9 @@ pipeline {
                 }
             }
             steps {
-                sh 'cd src/gu.transmogrifier; rm -rf build; rm -rf dist'
                 withPyPi() {
                     // Build has to happen in correct folder or setup.py won't find MANIFEST.in file and other files
-                    sh 'cd src/gu.transmogrifier; python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
+                    sh 'python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
                 }
             }
         }
