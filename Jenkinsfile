@@ -13,8 +13,14 @@ pipeline {
             steps {
                 // environment {} is executed in node context, and there is no WORKSPACE defined
                 withPyPi() {
-                    sh 'rm -fr .eggs .cache'
-                    sh 'pip install -e .'
+                    // clean up workenv but keep cached eggs
+                    sh 'git clean -x -d -f -e "eggs"'
+                    // get pip
+                    sh 'easy_install pip'
+                    // install build env
+                    sh "pip install -r requirements.txt"
+                    // build everything
+                    sh 'buildout'
                 }
             }
 
@@ -23,12 +29,7 @@ pipeline {
 
             steps {
                 withPyPi() {
-                    // install test dependencies
-                    sh 'pip install .'
-                    // install test runnor
-                    sh 'pip install pytest pytest-cov'
-                    // TODO: use --cov-report=xml -> coverage.xml
-                    sh(script: 'pytest -v --junitxml=junit.xml --cov-report=html --cov=gu.transmogrifier',
+                    sh(script: './bin/test',
                        returnStatus: true)
                 }
                 // capture test result
@@ -41,20 +42,10 @@ pipeline {
                     tools: [
                         [$class: 'JUnitType', deleteOutputFiles: true,
                                               failIfNotNew: true,
-                                              pattern: 'junit.xml',
+                                              pattern: 'parts/test/testreports/*.xml',
                                               stopProcessingIfError: true]
                     ]
                 ])
-                // publish html coverage report
-                publishHTML(target: [
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: 'htmlcov',
-                    reportFiles: 'index.html',
-                    reportName: 'Coverage Report'
-                ])
-
             }
 
         }
@@ -67,10 +58,10 @@ pipeline {
                 }
             }
             steps {
-                sh 'rm -rf build; rm -rf dist'
+                sh 'cd src/gu.transmogrifier; rm -rf build; rm -rf dist'
                 withPyPi() {
                     // Build has to happen in correct folder or setup.py won't find MANIFEST.in file and other files
-                    sh 'python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
+                    sh 'cd src/gu.transmogrifier; python setup.py register -r devpi sdist bdist_wheel upload -r devpi'
                 }
             }
         }

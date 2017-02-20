@@ -24,18 +24,13 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'setuptools',  # distribute
         'zope.interface',
         'collective.transmogrifier',
+        'transaction',
         # make these optional?
-        'plone.dexterity',
         'plone.app.dexterity',
         'Products.CMFPlone',
     ],
-    extras_require={
-        'test': ['unittest2']
-    },
-
     entry_points="""
     # -*- Entry points: -*-
     [z3c.autoinclude.plugin]
